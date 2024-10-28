@@ -14,3 +14,5 @@ app.use('/cocktails', cocktails);
 
 const ingredients = require('./routes/ingredients');
 app.use('/ingredients', ingredients);
+
+module.exports = app;
