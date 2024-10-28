@@ -1,10 +1,45 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../helpers/database');
+
 router.get('/:id', async (req, res) => {
     try {
         const sqlQuery = 'SELECT * FROM cocktails WHERE CocktailID = ?';
         const rows = await db.query(sqlQuery, req.params.id);
+        res.status(200).json(rows);
+    }
+    catch (error) {
+        res.status(400).send(error.message);
+    }
+});
+router.get('/', async (req, res) => {
+    try {
+        let sqlQuery = 'SELECT * FROM cocktails';
+        const params = [];
+        
+
+        //Get by id
+        if (req.query.id) {
+            sqlQuery += ' WHERE CocktailID = ?';
+            params.push(req.query.id);
+        }
+        else {
+            // Filtering
+            if (req.query.name) {
+                sqlQuery += ' WHERE Name LIKE ?';
+                params.push(`%${req.query.name}%`);
+            }
+            console.log(req.query);
+
+            // Sorting
+            if (req.query.sortBy) {
+                const sortOrder = req.query.sortOrder === 'desc' ? 'DESC' : 'ASC';
+                sqlQuery += ` ORDER BY ${req.query.sortBy} ${sortOrder}`;
+            }
+        }
+
+        const rows = await db.query(sqlQuery, params);
+        console.log(sqlQuery);
         res.status(200).json(rows);
     }
     catch (error) {
@@ -29,7 +64,7 @@ router.post('/', async (req, res) => {
 });
 router.put('/:id', async (req, res) => {
     try {
-        const sqlQuery = 'UPDATE cocktails SET Name = ?, Recipe = ?, Category = ? WHERE CocktailID = ?';
+        const sqlQuery = 'UPDATE cocktails SET Name = ?, Recipe = ?, Category_ID = ? WHERE CocktailID = ?';
         await db.query(sqlQuery, [req.body.Name, req.body.Recipe, req.params.id, req.body.Category]);
 
         if(req.body.Ingredients) {

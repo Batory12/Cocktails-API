@@ -21,6 +21,9 @@
     "mariadb": "^3.4.0"
   },
   "devDependencies": {
-    "jsdoc": "^4.0.4"
+    "chai": "^5.1.2",
+    "chai-http": "^5.1.1",
+    "jsdoc": "^4.0.4",
+    "mocha": "^10.7.3"
   }
 }

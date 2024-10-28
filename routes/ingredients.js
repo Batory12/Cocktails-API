@@ -12,8 +12,51 @@ router.get('/:id', async (req, res) => {
         res.status(400).send(error.message);
     }
 });
+router.get('/', async (req, res) => {
+    try {
+        let sqlQuery = 'SELECT * FROM ingredients';
+        const params = [];
+        if (req.query.name) {
+            if(params.length === 0) {
+                sqlQuery += ' WHERE Name LIKE ?';
+            }
+            else {
+                sqlQuery += ' AND Name LIKE ?';
+            }
+            params.push(`%${req.query.name}%`);
+        }
+        if (req.query.type) {
+            if(params.length === 0) {
+                sqlQuery += ' WHERE Type = ?';
+            }
+            else {
+                sqlQuery += ' AND Type = ?';
+            }
+            params.push(req.query.type);
+        }
+        if (req.query.isAlcoholic) {
+            if(params.length === 0) {
+                sqlQuery += ' WHERE IsAlcoholic = ?';
+            }
+            else {
+                sqlQuery += ' AND IsAlcoholic = ?';
+            }
+            params.push(req.query.isAlcoholic);
+        }
+        const rows = await db.query(sqlQuery, params);
+        res.status(200).json(rows);
+        if(req.query.sortBy) {
+            const sortOrder = req.query.sortOrder === 'desc' ? 'DESC' : 'ASC';
+            sqlQuery += ` ORDER BY ${req.query.sortBy} ${sortOrder}`;
+        }
+    }
+    catch (error) {
+        res.status(400).send(error.message);
+    }
+});
 router.post('/', async (req, res) => {
     try {
+        
         const sqlQuery = 'INSERT INTO ingredients (Name, Type, IsAlcoholic, Image, Description) VALUES (?, ?, ?, ?, ?)';
         const result = await db.query(sqlQuery, [req.body.Name, req.body.Type, req.body.IsAlcoholic, req.body.Image, req.body.Description]);
         res.status(201).json({"ID": Number(result.insertId)});
