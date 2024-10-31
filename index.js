@@ -3,7 +3,12 @@ const dotenv = require('dotenv');
 dotenv.config({path: '.env-local'});
 const PORT = process.env.PORT || 8080;
 
+
 const app = express();
+
+const { swaggerUi, specs } = require('./swagger');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
 app.use(express.json());
 app.listen(PORT, () => {
     console.log(`Server Listening on: http://localhost:${PORT}`);

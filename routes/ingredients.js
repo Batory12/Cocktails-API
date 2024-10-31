@@ -1,6 +1,58 @@
+
+/**
+ * @swagger
+ * tags:
+ *   name: Ingredients
+ *   description: API for managing ingredients
+ */
+
+
+
+
+
+
+
+
 const express = require('express');
 const router = express.Router();
 const db = require('../helpers/database');
+
+/**
+ * @swagger
+ * /ingredients/{id}:
+ *   get:
+ *     summary: Retrieve a single ingredient by ID
+ *     tags: [Ingredients]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The ingredient ID
+ *     responses:
+ *       200:
+ *         description: The ingredient data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 IngredientID:
+ *                   type: integer
+ *                 Name:
+ *                   type: string
+ *                 Type:
+ *                   type: string
+ *                 IsAlcoholic:
+ *                   type: boolean
+ *                 Image:
+ *                   type: string
+ *                 Description:
+ *                   type: string
+ *       400:
+ *         description: Bad request
+ */
 
 router.get('/:id', async (req, res) => {
     try {
@@ -12,6 +64,68 @@ router.get('/:id', async (req, res) => {
         res.status(400).send(error.message);
     }
 });
+
+
+
+/**
+ * @swagger
+ * /ingredients:
+ *   get:
+ *     summary: Retrieve a list of ingredients
+ *     tags: [Ingredients]
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *         description: Filter by ingredient name
+ *       - in: query
+ *         name: type
+ *         schema:
+ *           type: string
+ *         description: Filter by ingredient type
+ *       - in: query
+ *         name: isAlcoholic
+ *         schema:
+ *           type: boolean
+ *         description: Filter by alcoholic content
+ *       - in: query
+ *         name: sortBy
+ *         schema:
+ *           type: string
+ *         description: Sort by a specific field
+ *       - in: query
+ *         name: sortOrder
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *         description: Sort order (asc or desc)
+ *     responses:
+ *       200:
+ *         description: A list of ingredients
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   IngredientID:
+ *                     type: integer
+ *                   Name:
+ *                     type: string
+ *                   Type:
+ *                     type: string
+ *                   IsAlcoholic:
+ *                     type: boolean
+ *                   Image:
+ *                     type: string
+ *                   Description:
+ *                     type: string
+ *       400:
+ *         description: Bad request
+ */
+
 router.get('/', async (req, res) => {
     try {
         let sqlQuery = 'SELECT * FROM ingredients';
@@ -54,6 +168,44 @@ router.get('/', async (req, res) => {
         res.status(400).send(error.message);
     }
 });
+
+/**
+ * @swagger
+ * /ingredients:
+ *   post:
+ *     summary: Create a new ingredient
+ *     tags: [Ingredients]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               Name:
+ *                 type: string
+ *               Type:
+ *                 type: string
+ *               IsAlcoholic:
+ *                 type: boolean
+ *               Image:
+ *                 type: string
+ *               Description:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Ingredient created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ID:
+ *                   type: integer
+ *       400:
+ *         description: Bad request
+ */
+
 router.post('/', async (req, res) => {
     try {
         
@@ -65,6 +217,47 @@ router.post('/', async (req, res) => {
         res.status(400).send(error.message);
     }
 });
+
+
+
+/**
+ * @swagger
+ * /ingredients/{id}:
+ *   put:
+ *     summary: Update an existing ingredient
+ *     tags: [Ingredients]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The ingredient ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               Name:
+ *                 type: string
+ *               Type:
+ *                 type: string
+ *               IsAlcoholic:
+ *                 type: boolean
+ *               Image:
+ *                 type: string
+ *               Description:
+ *                 type: string
+ *     responses:
+ *       204:
+ *         description: Ingredient updated successfully
+ *       400:
+ *         description: Bad request
+ */
+
+
 router.put('/:id', async (req, res) => {
     try {
         let sqlQuery = 'UPDATE ingredients SET ';
@@ -114,6 +307,26 @@ router.put('/:id', async (req, res) => {
         res.status(400).send(error.message);
     }
 });
+
+/**
+ * @swagger
+ * /ingredients/{id}:
+ *   delete:
+ *     summary: Delete an ingredient
+ *     tags: [Ingredients]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The ingredient ID
+ *     responses:
+ *       204:
+ *         description: Ingredient deleted successfully
+ *       400:
+ *         description: Bad request
+ */
 router.delete('/:id', async (req, res) => {
     try {
         await db.query('DELETE FROM ingredients WHERE IngredientID = ?', req.params.id);
