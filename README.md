@@ -1,13 +1,4 @@
-# Cocktails Project
-
-## Overview
-This project is a comprehensive guide and database for various cocktail recipes. It allows users to browse, search, and discover new cocktails.
-
-## Features
-- Browse a wide variety of cocktail recipes
-- Search for cocktails by name or ingredients
-- Detailed instructions and ingredient lists for each cocktail
-- User ratings and reviews
+# Cocktails API
 
 ## Installation
 1. Clone the repository
