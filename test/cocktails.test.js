@@ -14,8 +14,7 @@ describe('Cocktails API', function() {
             request(app)
             .get('/cocktails/1')
             .expect(200).end(function(err, res) {
-                if (err) return done(err);
-                assert(Array.isArray(response.body));
+                assert(Array.isArray(res.body));
                 done();
             });
         

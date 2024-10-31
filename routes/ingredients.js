@@ -67,28 +67,45 @@ router.post('/', async (req, res) => {
 });
 router.put('/:id', async (req, res) => {
     try {
-        const sqlQuery = 'UPDATE ingredients SET ';
+        let sqlQuery = 'UPDATE ingredients SET ';
         updates = [];
         if(req.body.Name) {
+            if(updates.length > 0) {
+                sqlQuery += ', ';
+            }
             updates.push(req.body.Name);
-            sqlQuery += 'Name = ?, ';
+            sqlQuery += 'Name = ?';
         }
         if(req.body.Type) {
+            if(updates.length > 0) {
+                sqlQuery += ', ';
+            }
             updates.push(req.body.Type);
-            sqlQuery += 'Type = ?, ';
+            sqlQuery += 'Type = ?';
         }
         if(req.body.IsAlcoholic) {
+            if(updates.length > 0) {
+                sqlQuery += ', ';
+            }
             updates.push(req.body.IsAlcoholic);
-            sqlQuery += 'IsAlcoholic = ?, ';
+            sqlQuery += 'IsAlcoholic = ?';
         }
         if(req.body.Image) {
+            if(updates.length > 0) {
+                sqlQuery += ', ';
+            }
             updates.push(req.body.Image);
-            sqlQuery += 'Image = ?, ';
+            sqlQuery += 'Image = ?';
         }
         if(req.body.Description) {
+            if(updates.length > 0) {
+                sqlQuery += ', ';
+            }
             updates.push(req.body.Description);
-            sqlQuery += 'Description = ?, ';
+            sqlQuery += 'Description = ?';
         }
+        sqlQuery += ' WHERE IngredientID = ?';
+        updates.push(req.params.id);
         await db.query(sqlQuery, updates);
         res.status(204).send();
 

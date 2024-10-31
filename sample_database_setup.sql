@@ -31,25 +31,25 @@ CREATE TABLE Cocktail_Ingredients (
     FOREIGN KEY (CocktailID) REFERENCES Cocktails(CocktailID),
     FOREIGN KEY (IngredientID) REFERENCES Ingredients(IngredientID)
 );
-
--- Insert sample data into Ingredients
-INSERT INTO Ingredients (Name, Type, IsAlcoholic, Image, Description) VALUES 
+-- Insert sample data into Ingredients table
+INSERT INTO Ingredients (Name, Type, IsAlcoholic, Image, Description) VALUES
 ('Vodka', 'Spirit', TRUE, 'vodka.jpg', 'A clear distilled alcoholic beverage.'),
 ('Gin', 'Spirit', TRUE, 'gin.jpg', 'A distilled alcoholic drink that derives its predominant flavour from juniper berries.'),
 ('Lemon Juice', 'Juice', FALSE, 'lemon_juice.jpg', 'Juice of lemons.'),
 ('Sugar Syrup', 'Syrup', FALSE, 'sugar_syrup.jpg', 'A simple syrup made from sugar and water.');
 
--- Insert sample data into Cocktails
-INSERT INTO Cocktails (Name, Category_ID, Recipe) VALUES 
-('Vodka Martini', 1, 'Mix vodka and dry vermouth. Shake with ice and strain into a chilled cocktail glass.'),
-('Gin and Tonic', 1, 'Pour gin and tonic water into a glass filled with ice. Stir gently.'),
-('Lemonade', 3, 'Mix lemon juice, sugar syrup, and water. Serve over ice.');
+-- Insert sample data into Cocktails table
+INSERT INTO Cocktails (Name, Category, Recipe) VALUES
+('Vodka Martini', 'Cocktail', 'Mix vodka and dry vermouth, garnish with an olive or a lemon twist.'),
+('Gin and Tonic', 'Cocktail', 'Mix gin and tonic water, garnish with a lime wedge.'),
+('Lemon Drop', 'Cocktail', 'Mix vodka, lemon juice, and sugar syrup, garnish with a lemon twist.');
 
--- Insert sample data into CocktailIngredients
-INSERT INTO CocktailIngredients (CocktailID, IngredientID, Quantity) VALUES 
-(1, 1, '60 ml'), -- Vodka Martini with Vodka
-(1, 3, '10 ml'), -- Vodka Martini with Lemon Juice
-(2, 2, '50 ml'), -- Gin and Tonic with Gin
-(2, 3, '100 ml'), -- Gin and Tonic with Lemon Juice
-(3, 3, '30 ml'), -- Lemonade with Lemon Juice
-(3, 4, '20 ml'); -- Lemonade with Sugar Syrup
+-- Insert sample data into Cocktail_Ingredients table
+INSERT INTO Cocktail_Ingredients (CocktailID, IngredientID, Quantity) VALUES
+(1, 1, '60ml'), -- Vodka Martini with Vodka
+(1, 2, '10ml'), -- Vodka Martini with Dry Vermouth (assuming Dry Vermouth is added to Ingredients table)
+(2, 2, '50ml'), -- Gin and Tonic with Gin
+(2, 3, '100ml'), -- Gin and Tonic with Tonic Water (assuming Tonic Water is added to Ingredients table)
+(3, 1, '45ml'), -- Lemon Drop with Vodka
+(3, 3, '15ml'), -- Lemon Drop with Lemon Juice
+(3, 4, '15ml'); -- Lemon Drop with Sugar Syrup

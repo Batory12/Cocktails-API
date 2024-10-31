@@ -64,7 +64,7 @@ router.post('/', async (req, res) => {
 });
 router.put('/:id', async (req, res) => {
     try {
-        const sqlQuery = 'UPDATE cocktails SET Name = ?, Recipe = ?, Category_ID = ? WHERE CocktailID = ?';
+        const sqlQuery = 'UPDATE cocktails SET Name = ?, Recipe = ?, Category = ? WHERE CocktailID = ?';
         await db.query(sqlQuery, [req.body.Name, req.body.Recipe, req.params.id, req.body.Category]);
 
         if(req.body.Ingredients) {
